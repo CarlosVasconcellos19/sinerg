@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinergIA Docs — Framework de Criação de Software 100% com IA</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           Variáveis CSS - Cores Oficiais IBAMA e Padrões de Design
+           ========================================================================== */
+        :root {
+            --color-dark-blue: #02193F;
+            --color-brick-red: #9A1B1E;
+            --color-light-blue: #1286C8;
+            --color-green: #00A650;
+            --color-white: #FFFFFF;
+            --color-bg-light: #F8FAFC;
+            --color-text-main: #334155;
+            --color-text-muted: #64748B;
+            --color-border: #E2E8F0;
+            
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ==========================================================================
+           Reset & Estilos Base
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg-light);
+            color: var(--color-text-main);
+            line-height: 1.6;
+            padding-top: 80px; /* Espaço para o header fixo */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ==========================================================================
+           Tipografia
+           ========================================================================== */
+        h1, h2, h3, h4 {
+            color: var(--color-dark-blue);
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        p {
+            color: var(--color-text-muted);
+        }
+
+        /* ==========================================================================
+           Botões
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background-color: var(--color-green);
+            color: var(--color-white);
+        }
+
+        .btn-primary:hover {
+            background-color: #008f45;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--color-dark-blue);
+            border-color: var(--color-dark-blue);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--color-dark-blue);
+            color: var(--color-white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ==========================================================================
+           1. Header
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--color-white);
+            box-shadow: var(--shadow-sm);
+            z-index: 1000;
+            height: 80px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-dark-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--color-green);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--color-dark-blue);
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover {
+            color: var(--color-light-blue);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background-color: var(--color-dark-blue);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        /* ==========================================================================
+           2. Hero Section
+           ========================================================================== */
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--color-white) 0%, var(--color-bg-light) 100%);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            max-width: 900px;
+            margin: 0 auto 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 760px;
+            margin: 0 auto 48px;
+        }
+
+        /* Contador Regressivo */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background-color: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 24px;
+            min-width: 120px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .countdown-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--color-brick-red);
+            line-height: 1;
+            margin-bottom: 8px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .countdown-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* ==========================================================================
+           3. Seção Principal (Cards)
+           ========================================================================== */
+        .section-padding {
+            padding: 96px 0;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+        }
+
+        .main-card {
+            background-color: var(--color-white);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border-top: 6px solid var(--color-light-blue);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-card:nth-child(2) {
+            border-top-color: var(--color-green);
+        }
+
+        .main-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .main-card h3 {
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+        }
+
+        .main-card p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        /* ==========================================================================
+           4. Seção de Organização (Documentos)
+           ========================================================================== */
+        .section-title {
+            text-align: center;
+            font-size: 2.25rem;
+            margin-bottom: 56px;
+        }
+
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 32px;
+        }
+
+        .doc-list-container {
+            background-color: var(--color-white);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+        }
+
+        .doc-list-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--color-bg-light);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+        }
+
+        .doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .doc-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            transition: var(--transition);
+            background-color: var(--color-bg-light);
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .doc-item:hover {
+            background-color: var(--color-white);
+            border-color: var(--color-light-blue);
+            color: var(--color-light-blue);
+            box-shadow: var(--shadow-sm);
+            transform: translateX(4px);
+        }
+
+        .doc-item::before {
+            content: "📄";
+            font-size: 1.25rem;
+        }
+
+        /* ==========================================================================
+           5. Seção Reuniões
+           ========================================================================== */
+        .meetings-section {
+            background-color: var(--color-white);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .meetings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .meeting-item {
+            background-color: var(--color-bg-light);
+            padding: 24px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 6px solid var(--color-brick-red);
+            transition: var(--transition);
+            border-top: 1px solid var(--color-border);
+            border-right: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .meeting-item:hover {
+            transform: translateX(8px);
+            background-color: var(--color-white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .meeting-title {
+            font-weight: 600;
+            color: var(--color-dark-blue);
+            font-size: 1.1rem;
+        }
+
+        /* ==========================================================================
+           6. Footer
+           ========================================================================== */
+        footer {
+            background-color: var(--color-dark-blue);
+            color: var(--color-white);
+            padding: 64px 0 24px;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .footer-logo span {
+            color: var(--color-green);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 24px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        /* ==========================================================================
+           Responsividade (Mobile-First adaptado)
+           ========================================================================== */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .countdown-item {
+                min-width: 100px;
+                padding: 16px;
+            }
+            .countdown-value {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: var(--color-white);
+                flex-direction: column;
+                padding: 40px 24px;
+                transition: var(--transition);
+                box-shadow: var(--shadow-md);
+                overflow-y: auto;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-menu .btn {
+                width: 100%;
+                margin-top: 16px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+
+            .hero {
+                padding: 64px 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .countdown-container {
+                gap: 12px;
+            }
+
+            .countdown-item {
+                min-width: 80px;
+                padding: 16px 12px;
+            }
+
+            .countdown-value {
+                font-size: 2rem;
+            }
+
+            .countdown-label {
+                font-size: 0.75rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+
+            .hero-buttons .btn {
+                width: 100%;
+            }
+
+            .meeting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .meeting-item .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">Sinerg<span>IA</span> Docs</a>
+            
+            <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#inicio" class="nav-link">Início</a>
+                <a href="#docs-app" class="nav-link">Documentação do App</a>
+                <a href="#docs-ia" class="nav-link">Documentação do Processo IA</a>
+                <a href="#reunioes" class="nav-link">Reuniões</a>
+                <a href="#docs-app" class="btn btn-primary">Acessar Documentação</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="container">
+            <h1>SinergIA — Framework de Criação de Software com IA</h1>
+            <p>Documentação completa do sistema de gestão de animais silvestres e do desenvolvimento 100% com Inteligência Artificial vinculada ao IBAMA</p>
+            
+            <div class="countdown-container" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-value" id="days">00</div>
+                    <div class="countdown-label">Dias</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="hours">00</div>
+                    <div class="countdown-label">Horas</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="minutes">00</div>
+                    <div class="countdown-label">Minutos</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="seconds">00</div>
+                    <div class="countdown-label">Segundos</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#docs-app" class="btn btn-primary">Ver Documentação do Sistema</a>
+                <a href="#docs-ia" class="btn btn-outline">Ver Framework SinergIA</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="cards-grid">
+                <a href="#docs-app" class="main-card">
+                    <h3 style="color: var(--color-light-blue);">Documentação do Sistema CETAS</h3>
+                    <p>Requisitos, arquitetura, banco de dados, APIs, segurança e toda a estrutura técnica do sistema.</p>
+                </a>
+                
+                <a href="#docs-ia" class="main-card">
+                    <h3 style="color: var(--color-green);">Framework SinergIA</h3>
+                    <p>Processo completo de criação do sistema usando IA, incluindo prompts, decisões e automação.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="docs-app" class="section-padding" style="background-color: var(--color-white); border-top: 1px solid var(--color-border);">
+        <div class="container">
+            <h2 class="section-title">Estrutura da Documentação</h2>
+            
+            <div class="docs-grid">
+                <div class="doc-list-container">
+                    <h3 class="doc-list-title">
+                        <span>📁</span> Documentação do Sistema
+                    </h3>
+                    <ul class="doc-list">
+                        <li class="doc-item">Fase 0 - Kickoff</li>
+                        <li class="doc-item">Fase 1 - Requisitos</li>
+                        <li class="doc-item">Fase 2 - Arquitetura</li>
+                        <li class="doc-item">Fase 3 - Banco de Dados</li>
+                        <li class="doc-item">Fase 4 - API</li>
+                    </ul>
+                </div>
+
+                <div id="docs-ia" class="doc-list-container">
+                    <h3 class="doc-list-title">
+                        <span>📁</span> Framework SinergIA
+                    </h3>
+                    <ul class="doc-list">
+                        <li class="doc-item">Prompts de Engenharia</li>
+                        <li class="doc-item">Decisões Arquiteturais</li>
+                        <li class="doc-item">Fluxos de Automação</li>
+                        <li class="doc-item">Boas práticas</li>
+                        <li class="doc-item">Anti-padrões</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reunioes" class="section-padding meetings-section">
+        <div class="container">
+            <h2 class="section-title">Atas e Reuniões</h2>
+            
+            <div class="meetings-list">
+                <div class="meeting-item">
+                    <span class="meeting-title">Reuniões Técnicas</span>
+                    <a href="#" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;">Ver Documentos</a>
+                </div>
+                <div class="meeting-item">
+                    <span class="meeting-title">Pontos de Controle</span>
+                    <a href="#" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;">Ver Documentos</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">Sinerg<span>IA</span> Docs</div>
+                <p style="color: #cbd5e1; margin: 0; font-size: 1.1rem;">SinergIA - Projeto de criação de software 100% com IA vinculado ao IBAMA</p>
+            </div>
+            <div class="footer-bottom">
+                &copy; <span id="current-year"></span> SinergIA — Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Menu Responsivo (Hamburger)
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const navMenu = document.getElementById('nav-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            function toggleMenu() {
+                hamburgerBtn.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                
+                if (navMenu.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+
+            hamburgerBtn.addEventListener('click', toggleMenu);
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navMenu.classList.contains('active')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // AJUSTE 2: Ajuste da lógica do contador para refletir 49 dias exatos a partir de hoje (24/03/2026)
+            // A data alvo para o lançamento (May 12, 2026) gera os 49 dias desejados.
+            const targetDate = new Date('May 12, 2026 00:00:00').getTime();
+            
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            const countdownContainer = document.getElementById('countdown');
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    countdownContainer.innerHTML = '<div class="countdown-value" style="width:100%; text-align:center; font-size: 2rem; color: var(--color-green);">Framework Lançado!</div>';
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                daysEl.innerText = days.toString().padStart(2, '0');
+                hoursEl.innerText = hours.toString().padStart(2, '0');
+                minutesEl.innerText = minutes.toString().padStart(2, '0');
+                secondsEl.innerText = seconds.toString().padStart(2, '0');
+            }
+
+            setInterval(updateCountdown, 1000);
+            updateCountdown(); 
+
+            document.getElementById('current-year').innerText = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
