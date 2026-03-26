@@ -51,7 +51,7 @@
             background-color: var(--color-bg-light);
             color: var(--color-text-main);
             line-height: 1.6;
-            padding-top: 80px; /* Espaço para o header fixo */
+            padding-top: 80px;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -218,7 +218,6 @@
             margin: 0 auto 48px;
         }
 
-        /* Contador Regressivo */
         .countdown-container {
             display: flex;
             justify-content: center;
@@ -451,6 +450,117 @@
         }
 
         /* ==========================================================================
+           7. Modais (Janelas de Resumo)
+           ========================================================================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(2, 25, 63, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--color-white);
+            padding: 32px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 800px; /* Aumentado para acomodar textos longos */
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh; /* Não deixa ultrapassar a tela */
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--color-brick-red);
+        }
+
+        /* Área com rolagem dentro do modal para os textos extensos */
+        .modal-body {
+            overflow-y: auto;
+            padding-right: 16px;
+            margin-bottom: 24px;
+            margin-top: 16px;
+            flex-grow: 1;
+        }
+
+        /* Estilização da barra de rolagem */
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .modal-body::-webkit-scrollbar-thumb {
+            background: var(--color-text-muted);
+            border-radius: 4px;
+        }
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: var(--color-dark-blue);
+        }
+
+        .modal-body h4 {
+            color: var(--color-light-blue);
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 8px;
+        }
+
+        .modal-body p {
+            margin-bottom: 12px;
+            color: var(--color-text-main);
+            font-size: 0.95rem;
+        }
+
+        .modal-body ul {
+            list-style-type: disc;
+            padding-left: 24px;
+            margin-bottom: 16px;
+            color: var(--color-text-main);
+            font-size: 0.95rem;
+        }
+
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        /* ==========================================================================
            Responsividade (Mobile-First adaptado)
            ========================================================================== */
         @media (max-width: 992px) {
@@ -553,6 +663,10 @@
             .meeting-item .btn {
                 width: 100%;
             }
+
+            .modal-content {
+                padding: 24px 16px;
+            }
         }
     </style>
 </head>
@@ -580,7 +694,7 @@
 
     <section id="inicio" class="hero">
         <div class="container">
-            <h1>SinergIA — Framework de Criação de Software com IA </h1>
+            <h1>SinergIA — Framework de Criação de Software com IA</h1>
             <p>Documentação completa do sistema de gestão de animais silvestres e do desenvolvimento 100% com Inteligência Artificial vinculada ao IBAMA</p>
             
             <div class="countdown-container" id="countdown">
@@ -666,15 +780,88 @@
             <div class="meetings-list">
                 <div class="meeting-item">
                     <span class="meeting-title">Reuniões Técnicas</span>
-                    <a href="#" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;">Ver Documentos</a>
+                    <button class="btn btn-outline" onclick="abrirModal('modal-tecnicas')" style="padding: 8px 16px; font-size: 0.9rem;">Ver Resumo e Documentos</button>
                 </div>
                 <div class="meeting-item">
                     <span class="meeting-title">Pontos de Controle</span>
-                    <a href="#" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;">Ver Documentos</a>
+                    <button class="btn btn-outline" onclick="abrirModal('modal-controle')" style="padding: 8px 16px; font-size: 0.9rem;">Ver Resumo e Documentos</button>
                 </div>
             </div>
         </div>
     </section>
+
+    <div id="modal-tecnicas" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn" onclick="fecharModal('modal-tecnicas')">&times;</button>
+            <h3 style="color: var(--color-dark-blue);">Resumos: Reuniões Técnicas</h3>
+            
+            <div class="modal-body">
+                <h4>Relatório de Resumo: Alinhamento Técnico CETAS Mobile IA</h4>
+                <p><strong>1. Objetivo da Reunião:</strong> Definir a estratégia de uma versão do sistema CETAS da plataforma web para uma solução mobile, priorizando a aceleração do processo de levantamento de requisitos e prototipagem através do uso de ferramentas de Inteligência Artificial (IA).</p>
+                <p><strong>2. Panorama do Sistema Atual:</strong> O sistema CETAS já possui uma versão web em produção. Contudo, a demanda atual exige uma versão mobile construída do zero para atender profissionais em campo, integrando funcionalidades que hoje dependem de registros manuais para posterior transposição ao sistema.</p>
+                <p><strong>3. Definições de Arquitetura e Tecnologia:</strong></p>
+                <ul>
+                    <li><strong>Ambiente de Desenvolvimento:</strong> Uso das IDEs Cursor AI e/ou Claude Code para codificação assistida.</li>
+                    <li><strong>Engenharia Reversa de Requisitos:</strong> Utilização do framework Playwright controlado por IA para varrer a aplicação web atual, mapear funcionalidades existentes e gerar especificações técnicas automaticamente.</li>
+                    <li><strong>Gestão de Código:</strong> Repositório privado no GitHub.</li>
+                    <li><strong>Autenticação:</strong> Integração com o sistema SCA2 do IBAMA para usuários internos e externos.</li>
+                </ul>
+                <p><strong>4. Escopo Definido para o MVP:</strong> Focado exclusivamente em operações de campo onde a mobilidade é crítica:</p>
+                <ul>
+                    <li>Login via SCA2.</li>
+                    <li>Registro de Soltura: Funcionalidade principal em campo.</li>
+                    <li>Geolocalização e Multimídia: Coleta de GPS e fotos/vídeos.</li>
+                    <li>Modo Offline: Sincronização posterior de dados.</li>
+                    <li>Monitoramento Pós-Soltura.</li>
+                </ul>
+                <p><em>Nota Técnica:</em> Funcionalidades administrativas e dashboards permanecerão na versão Web.</p>
+                <p><strong>5. Desafios Identificados:</strong> Aprovação do Negócio, Infraestrutura (VPN) e Integrações Futuras (rastreamento por satélite/chips).</p>
+                <p><strong>6. Matriz de Responsabilidades (Entrega 18/03):</strong> Roni (Mapeamento), Praxedes (Protótipos), Artur (Documentação), Bruno (Consolidação).</p>
+                <p><strong>7. Próximos Passos:</strong> Reunião de Validação (18/03) e Apresentação ao Cliente.</p>
+
+                <h4>Resumo Técnico – Reunião de Alinhamento APP CETAS (25/03/2026)</h4>
+                <p><strong>Participantes principais:</strong> Eduardo Praxedes, Alisson Wladmir, Felipe, Artur Silvestre, Bruno Rodrigues, Roni Cley.</p>
+                <p><strong>1. Estrutura e Arquitetura:</strong> Mobile (React Native + TypeScript), DB Local (WatermelonDB ou SQLite), BFF (Node.js), Legacy Backend (IBAMA API). Arquitetura altamente refatorável pela IA.</p>
+                <p><strong>2. Codificação Assistida por IA (25/03 a 01/04):</strong> Felipe inicia a codificação base (boilerplate) orientada por IA. Uso intencional do modelo "IA + revisão humana" (Felipe + Rodrigo revisor).</p>
+                <p><strong>3. Requisitos e Protótipos:</strong> Especificações de Login, Pós-soltura e Soltura produzidas. Todo material servirá de prompt para IA.</p>
+                <p><strong>4. Documentação:</strong> Site HTML já criado por Artur. Planejada a integração com repositório via CI/CD para atualização automática via IA.</p>
+                <p><strong>5. Cronograma:</strong> Reunião com a área gestora (01/04/2026) para validação. Risco principal: mudança de escopo. Mitigação: adiantar desenvolvimento offline e usar IA para refatoração rápida.</p>
+            </div>
+
+            <a href="arquivos/atas_tecnicas.pdf" download="Atas_Reunioes_Tecnicas.pdf" class="btn btn-primary" style="text-align: center;">Baixar Atas Completas (PDF)</a>
+        </div>
+    </div>
+
+    <div id="modal-controle" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn" onclick="fecharModal('modal-controle')">&times;</button>
+            <h3 style="color: var(--color-dark-blue);">Resumos: Pontos de Controle</h3>
+            
+            <div class="modal-body">
+                <h4>Relatório Técnico – Reunião 1: Kick-off do Projeto APP CETAS (12/03/2026)</h4>
+                <p><strong>1. Objetivo Estratégico:</strong> Desenvolver 100% com IA um app mobile (Android/iOS) para o CETAS/IBAMA. Foco no MVP em 60 dias (prazo 11/05/2026). Trata-se de um piloto de transformação de paradigma na Administração Pública (ciclo AI-orchestrated).</p>
+                <p><strong>2. Escopo do MVP:</strong> Funcionalidades core incluem Registro de Soltura (com GPS offline, fotos e sincronização) e Monitoramento Pós-Soltura. Requisitos obrigatórios: Offline-first, LGPD e Autenticação.</p>
+                <p><strong>3. Paradigma AI-Driven Development:</strong> Zero código manual (na medida do possível). Uso de Figma AI, Cursor/Claude Code e Documentação como código. Stack alvo: Mobile + Backend IBAMA + Banco offline.</p>
+                <p><strong>4. Organização e Papéis:</strong> 
+                   <br>Grupo 1 (Discovery): Praxedes + Roni. 
+                   <br>Grupo 2 (Engenharia): Allison + Felipe. 
+                   <br>Sponsor: Bruno Rodrigues.
+                </p>
+                <p><strong>5. Próximos Passos:</strong> Sessão de Discovery profunda (17/03) e apresentação de wireframe + primeira versão de ADRs (19/03).</p>
+                <p><strong>6. Riscos Técnicos:</strong> Limite de tokens da IA, integração com sistema legado, latência em campo e mudança cultural da equipe.</p>
+
+                <h4>Relatório Técnico Resumido – APP CETAS (Exclusivo IA) (19/03/2026)</h4>
+                <p><strong>1. Objetivo:</strong> App nativo Android offline-first e Framework guiado por IA documentado.</p>
+                <p><strong>2. Abordagem:</strong> Todo o ciclo é executado via agentes IA (Cursor + Claude). Time atua como orquestrador.</p>
+                <p><strong>3. Ferramentas Planejadas:</strong> Playwright (engenharia reversa e testes), Cursor (prototipação HTML, geração mobile e documentação), GitHub Private (gestão).</p>
+                <p><strong>4. Arquitetura do MVP:</strong> Android 8.0+ offline total, BFF para adaptação, reaproveitamento de serviços Java IBAMA e Data Lake intermediário. Dashboard fica apenas na Web.</p>
+                <p><strong>5. Processos IA:</strong> Especialização de agentes por ADR, prototipação em tempo real, documentação automática no código e medição detalhada de tokens para custeio.</p>
+                <p><strong>6. Decisões Críticas:</strong> Reaproveitamento 100% do backend atual, uso de HTML para protótipos navegáveis e suporte a polígono de soltura.</p>
+            </div>
+
+            <a href="arquivos/atas_controle.pdf" download="Atas_Pontos_Controle.pdf" class="btn btn-primary" style="text-align: center;">Baixar Atas Completas (PDF)</a>
+        </div>
+    </div>
 
     <footer>
         <div class="container">
@@ -716,8 +903,7 @@
                 });
             });
 
-            // AJUSTE 2: Ajuste da lógica do contador para refletir 49 dias exatos a partir de hoje (24/03/2026)
-            // A data alvo para o lançamento (May 12, 2026) gera os 49 dias desejados.
+            // 2. Contador
             const targetDate = new Date('May 12, 2026 00:00:00').getTime();
             
             const daysEl = document.getElementById('days');
@@ -750,6 +936,29 @@
             updateCountdown(); 
 
             document.getElementById('current-year').innerText = new Date().getFullYear();
+
+            // =======================================================
+            // 3. Lógica dos Modais de Reuniões
+            // =======================================================
+            window.abrirModal = function(modalId) {
+                const modal = document.getElementById(modalId);
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Impede rolagem da página atrás
+            }
+
+            window.fecharModal = function(modalId) {
+                const modal = document.getElementById(modalId);
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // Restaura rolagem
+            }
+
+            // Fechar ao clicar fora (no fundo escuro)
+            window.onclick = function(event) {
+                if (event.target.classList.contains('modal-overlay')) {
+                    event.target.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
         });
     </script>
 </body>
